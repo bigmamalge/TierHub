@@ -1,5 +1,4 @@
 package org.example.tierhub;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
@@ -34,5 +33,28 @@ public class Main {
                 Tierlist.class
         );
         System.out.println(ssbu_chars);
+
+        /* EXAMPLE : utilisation des views models
+                public class MainController {
+
+                private TierlistViewModel viewModel;
+
+                public void setTierlist(Tierlist tierlist) {
+                    this.viewModel = new TierlistViewModel(tierlist);
+                    render();
+                }
+
+                private void render() {
+                    for (TierViewModel tier : viewModel.getTiers()) {
+
+                        System.out.println("Tier: " + tier.getTierName());
+
+                        for (ItemViewModel item : tier.getItems()) {
+                            System.out.println(" - " + item.nameProperty().get());
+                        }
+                    }
+                }
+            }
+         */
     }
 }
