@@ -1,3 +1,11 @@
 #HB1{
     -fx-background-color:"black";
 }
+
+#HB2{
+    -fx-background-color:rgb(23, 45, 64);
+}
+
+#bg{
+    -fx-background: rgb(0, 33, 71);
+}

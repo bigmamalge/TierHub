@@ -3,12 +3,14 @@ package org.example.tierhub;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.ImageCursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Controller {
     @FXML
@@ -16,6 +18,9 @@ public class Controller {
 
     @FXML
     private Button btn;
+
+    @FXML
+    private Button colour;
 
     private ImageView img;
 
@@ -27,6 +32,19 @@ public class Controller {
 
         boiteDeEnBas.getChildren().add(uneImg);
         uneImg.setOnMouseClicked(event -> test(event));
+
+
+    }
+
+    @FXML
+    private void changeCSS(ActionEvent event){
+        Scene scene = (Scene) btn.getScene();
+        scene.getStylesheets().add(getClass().getResource("application-light.css").toExternalForm());
+    }
+
+    @Override
+    public void initialize(URL url, RessourceBundle rb){
+        colour.getScene().getRoot().getStylesheets().add(getClass().getResource("application-light.css").toString());
     }
 
     @FXML
