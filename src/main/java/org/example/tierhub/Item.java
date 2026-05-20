@@ -12,6 +12,9 @@ public class Item {
         this.lienImg = lienImg;
     }
 
+    public Item() {
+    }
+
     public Item(String nom) {
         this(nom, DEFAULT_LINK);
     }

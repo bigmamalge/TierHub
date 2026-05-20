@@ -5,12 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 public class Tier {
-    Map<String, List<Item>> tier = new LinkedHashMap<>();
+    private Map<String, List<Item>> tier = new LinkedHashMap<>();
+
+    public Map<String, List<Item>> getTier() {
+        return tier;
+    }
+
+    public void setTier(Map<String, List<Item>> tier) {
+        this.tier = tier;
+    }
 
     @Override
     public String toString() {
         return "Tier{" +
-                "tier=" + tier +
+                "" + tier +
                 '}';
     }
 }

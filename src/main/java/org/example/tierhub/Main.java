@@ -1,12 +1,38 @@
 package org.example.tierhub;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
 import java.util.*;
 public class Main {
-    public static void main(String[] args) {
-        Tier s = new Tier();
-        Item Mario = new Item("Mario");
-        Item Link = new Item("Link", "https://www.google.com/url?sa=t&source=web&rct=j&url=https%3A%2F%2Fzelda.fandom.com%2Ffr%2Fwiki%2FLink&ved=0CBYQjRxqFwoTCLC3rsXvx5QDFQAAAAAdAAAAABAh&opi=89978449");
-        s.tier.put("S", Arrays.asList(Mario, Link));
+    public static void main(String[] args) throws Exception {
 
-        System.out.println(s.toString());
+        Item mario = new Item("Mario");
+        Item link = new Item(
+                "Link",
+                "https://zelda.fandom.com/fr/wiki/Link"
+        );
+        Item gaw=new Item("game and watch");
+        Item ganondorf=new Item("ganondorf");
+        Item bowser=new Item("Bowser");
+
+
+        Tier s = new Tier();
+        s.getTier().put("S", List.of(mario, link));
+        Tier a = new Tier();
+        a.getTier().put("A", List.of(gaw, ganondorf, bowser));
+
+        Tierlist tierlist = new Tierlist(List.of(s, a), "ssbu characters");
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.writerWithDefaultPrettyPrinter()
+                .writeValue(new File(tierlist.getName()+".json"), tierlist);
+
+        Tierlist ssbu_chars = mapper.readValue(
+                new File(tierlist.getName()+".json"),
+                Tierlist.class
+        );
+        System.out.println(ssbu_chars);
     }
 }
