@@ -75,9 +75,14 @@
             <Insets bottom="50.0" top="10.0" />
          </padding>
       </HBox>
-      <HBox fx:id="boiteDeEnBas" prefHeight="90.0" prefWidth="828.0">
-         <padding>
-            <Insets top="25.0" />
-         </padding></HBox>
+      <ScrollPane prefHeight="101.0" prefWidth="828.0">
+         <content>
+            <HBox fx:id="boiteDeEnBas" prefHeight="90.0" prefWidth="827.0">
+               <padding>
+                  <Insets top="25.0" />
+               </padding>
+            </HBox>
+         </content>
+      </ScrollPane>
    </children>
 </VBox>
