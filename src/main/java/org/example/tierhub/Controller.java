@@ -32,8 +32,6 @@ public class Controller {
     @FXML
     private void test(MouseEvent event){
         ImageView uneImg = (ImageView) event.getSource();
-        uneImg.setFitWidth(100);
-        uneImg.setFitHeight(100);
         img  = uneImg;
     }
 

@@ -4,13 +4,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
    <content>
       <VBox prefHeight="487.0" prefWidth="592.0">
          <children>
             <HBox prefHeight="60.0" prefWidth="575.0" style="-fx-background-color: #d2d2d2;">
                <children>
-                  <Button mnemonicParsing="false" text="Générer Tier List" />
+                  <Button fx:id="btn" mnemonicParsing="false" onAction="#addImage" text="Générer Tier List" />
                </children>
             </HBox>
             <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="572.0" style="-fx-border-color: #ff8800; -fx-border-width: 2;">
@@ -67,8 +67,11 @@
                   <Insets top="20.0" />
                </opaqueInsets>
                <content>
-                  <HBox prefHeight="100.0" prefWidth="588.0" />
+                  <HBox fx:id="boiteDeEnBas" prefHeight="100.0" prefWidth="550.0" />
                </content>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" top="10.0" />
+               </VBox.margin>
             </ScrollPane>
          </children>
       </VBox>
