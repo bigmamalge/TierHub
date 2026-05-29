@@ -1,3 +1,7 @@
 #HB1{
     -fx-background-color : "blue";
 }
+
+.root {
+    -fx-background-color: #f5f5f5; /* light */
+}

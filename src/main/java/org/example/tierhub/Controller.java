@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
+
 public class Controller {
     @FXML
     private HBox boiteDeEnBas;
@@ -24,6 +26,24 @@ public class Controller {
 
     private ImageView img;
 
+    private boolean isLightMode = true;
+    public void changeMode(ActionEvent event){
+        Scene scene = colour.getScene();
+        System.out.println(isLightMode);
+        String darkCSS = getClass().getResource("application-dark.css").toExternalForm();
+        String lightCSS = getClass().getResource("application-light.css").toExternalForm();
+
+        isLightMode = !isLightMode;
+        scene.getStylesheets().clear();
+
+        if(isLightMode){
+            scene.getStylesheets().add(darkCSS);
+        }else{
+            scene.getStylesheets().add(lightCSS);
+        }
+
+    }
+
     @FXML
     private void addImage(){
         ImageView uneImg = new ImageView("https://cdn.discordapp.com/attachments/1278720637170352258/1505653311381045268/Capture_decran_2025-09-17_193308.png?ex=6a0b686b&is=6a0a16eb&hm=1c6725cdebeaecd1fd5e8d7612774aaee257a0eafa9e71ecf3114794f82bad4e&");
@@ -34,17 +54,6 @@ public class Controller {
         uneImg.setOnMouseClicked(event -> test(event));
 
 
-    }
-
-    @FXML
-    private void changeCSS(ActionEvent event){
-        Scene scene = (Scene) btn.getScene();
-        scene.getStylesheets().add(getClass().getResource("application-light.css").toExternalForm());
-    }
-
-    @Override
-    public void initialize(URL url, RessourceBundle rb){
-        colour.getScene().getRoot().getStylesheets().add(getClass().getResource("application-light.css").toString());
     }
 
     @FXML
