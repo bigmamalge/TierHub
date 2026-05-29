@@ -5,9 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.ImageCursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 public class Controller {
@@ -18,6 +20,9 @@ public class Controller {
     private Button btn;
 
     private ImageView img;
+
+    @FXML
+    private ImageView TierHub;
 
     @FXML
     private void addImage(){
@@ -32,6 +37,8 @@ public class Controller {
     @FXML
     private void test(MouseEvent event){
         ImageView uneImg = (ImageView) event.getSource();
+        uneImg.setFitWidth(70);
+        uneImg.setFitHeight(70);
         img  = uneImg;
     }
 
@@ -41,7 +48,7 @@ public class Controller {
 
         source.getChildren().remove(img);
 
-        HBox destination = (HBox) event.getSource();
+        TilePane destination = (TilePane) event.getSource();
 
         destination.getChildren().add(img);
     }

@@ -2,15 +2,24 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="498.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tierhub.Controller">
    <content>
       <VBox prefHeight="487.0" prefWidth="592.0">
          <children>
-            <HBox prefHeight="60.0" prefWidth="575.0" style="-fx-background-color: #d2d2d2;">
+            <HBox prefHeight="50.0" prefWidth="592.0" style="-fx-background-color: #d2d2d2;">
                <children>
-                  <Button fx:id="btn" mnemonicParsing="false" onAction="#addImage" text="Générer Tier List" />
+                  <ImageView fx:id="TierHub" fitHeight="39.0" fitWidth="130.0" pickOnBounds="true" smooth="false">
+                      <Image url="https://imagetourl.cloud/7p0rbqjq.png"/>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin></ImageView>
+                  <Button fx:id="btn" mnemonicParsing="false" onAction="#addImage" text="Générer Tier List">
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin></Button>
                </children>
             </HBox>
             <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="292.0" prefWidth="572.0" style="-fx-border-color: #ff8800; -fx-border-width: 2;">
