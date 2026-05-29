@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="270.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tierhub.Controller_Parametres">
+   <children>
+      <Label alignment="CENTER" layoutY="28.0" prefHeight="35.0" prefWidth="394.0" text="Nom Tier" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <ColorPicker layoutX="224.0" layoutY="103.0" />
+      <Label layoutX="262.0" layoutY="80.0" text="Couleur Tier" />
+      <TextField layoutX="25.0" layoutY="103.0" />
+      <Label layoutX="53.0" layoutY="80.0" text="Changer nom tier" />
+      <Button layoutX="234.0" layoutY="231.0" mnemonicParsing="false" text="Confirmer Changements" />
+      <Button layoutX="14.0" layoutY="231.0" mnemonicParsing="false" text="Annuler" />
+      <Label layoutX="25.0" layoutY="164.0" text="Évitez les noms trop longs si possible :)">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
