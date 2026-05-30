@@ -18,5 +18,6 @@
         <TextField fx:id="textfield" layoutX="25.0" layoutY="103.0" />
         <Label layoutX="53.0" layoutY="80.0" text="Changer nom tier" />
         <Button layoutX="221.0" layoutY="171.0" mnemonicParsing="false" onAction="#quitter" text="Confirmer Changements" />
+      <Button alignment="CENTER" layoutX="27.0" layoutY="171.0" mnemonicParsing="false" onAction="#supp" prefHeight="26.0" prefWidth="141.0" text="Supprimer" />
     </children>
 </AnchorPane>

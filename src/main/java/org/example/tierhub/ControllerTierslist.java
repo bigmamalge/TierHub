@@ -29,18 +29,14 @@ public class ControllerTierslist {
     private VBox boiteDeCat;
     @FXML
     ImageView trashcan;
+    @FXML
+    ImageView modify;
 
 
     private Node item;
 
-    FileChooser fileChooser = new FileChooser();
-
     @FXML
     private void initialize(){
-        fileChooser.setTitle("Ouvrir une image");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Fichiers Image", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
 
         boiteDeEnBas.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -81,10 +77,53 @@ public class ControllerTierslist {
 
         });
 
+        cheminRessource = getClass().getResource("engrenage.png").toExternalForm();
+        modify.setImage(new Image(cheminRessource));
+
+        modify.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.MOVE);
+            event.consume();
+        });
+
+        modify.setOnDragDropped(event -> {
+            if(item != null){
+                TilePane base = (TilePane) item.getParent();
+                base.getChildren().remove(item);
+                if(item instanceof ImageView){
+                    ImageView iv = (ImageView) item;
+                    addItem(base,iv.getImage());
+                }
+                else if (item instanceof StackPane){
+                    StackPane sp = (StackPane) item;
+                    Label lb = (Label) sp.getChildren().get(0);
+                    addItem(base, (Color) sp.getBackground().getFills().get(0).getFill(),lb.getText());
+                }
+
+                event.setDropCompleted(true);
+                event.consume();
+            }else{
+                event.setDropCompleted(false);
+            }
+
+        });
+
     }
 
     @FXML
     private void addItem(){
+        String cheminRessource = getClass().getResource("TierHub.png").toExternalForm();
+        addItem(boiteDeEnBas, new Image(cheminRessource),Color.web("#27F52A"),"");
+    }
+
+    private void addItem(TilePane tilePane, Image img){
+        addItem(tilePane,img,Color.web("#27F52A"),"");
+    }
+    private void addItem(TilePane tilePane, Color color, String txt){
+        String cheminRessource = getClass().getResource("TierHub.png").toExternalForm();
+        addItem(tilePane, new Image(cheminRessource),color,txt);
+    }
+
+    private void addItem(TilePane tilePane, Image img, Color color, String txt){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("paramItem.fxml"));
         Scene scene = null;
         try {
@@ -100,42 +139,33 @@ public class ControllerTierslist {
         newItem.setTitle("newItem");
 
         ControlleurParamItem controlleur = loader.getController();
+        controlleur.setImage(img);
+        controlleur.setColor(color);
+        controlleur.setTitre(txt);
 
         newItem.showAndWait();
 
-        controlleur.getSortie();
-    }
+        if (controlleur.getSortie() == 1){
+            ImageView uneImg = new ImageView(controlleur.getImage());
+            uneImg.setFitWidth(70);
+            uneImg.setFitHeight(70);
 
+            tilePane.getChildren().add(uneImg);
 
-    @FXML
-    private void addImage(){
-        File fichierimg = fileChooser.showOpenDialog(null);
-        if (fichierimg == null){
-            return;
+            setDragable(uneImg);
         }
-        String chemin = fichierimg.toURI().toString();
-        ImageView uneImg = new ImageView(chemin);
-        uneImg.setFitWidth(70);
-        uneImg.setFitHeight(70);
 
-        boiteDeEnBas.getChildren().add(uneImg);
+        if (controlleur.getSortie() == 2){
+            StackPane blockLabel = new StackPane();
+            blockLabel.setPrefSize(70,70);
+            Label label = new Label(controlleur.getText());
+            blockLabel.setBackground(Background.fill(controlleur.getColor()));
+            blockLabel.getChildren().add(label);
 
-        setDragable(uneImg);
+            tilePane.getChildren().add(blockLabel);
 
-
-    }
-
-    @FXML
-    private void addLabel(){
-        StackPane blockLabel = new StackPane();
-        blockLabel.setPrefSize(70,70);
-        Label label = new Label("test");
-        blockLabel.getChildren().add(label);
-
-        boiteDeEnBas.getChildren().add(blockLabel);
-
-        setDragable(blockLabel);
-
+            setDragable(blockLabel);
+        }
     }
 
     private void setDragable(Node node){
@@ -247,13 +277,18 @@ public class ControllerTierslist {
 
             ControlleurParamTiers controlleur = loader.getController();
 
-            controlleur.setColor((Color) titrePan.getBackground().getFills().get(0).getFill());// A faire, ps : la flm
+            controlleur.setColor((Color) titrePan.getBackground().getFills().get(0).getFill());
             controlleur.setname(titre.getText());
 
             setting.showAndWait();
 
             titrePan.setBackground(Background.fill(controlleur.getColor()));
             titre.setText(controlleur.getname());
+
+            if(controlleur.isDelete()){
+                int pos = boiteDeCat.getChildren().indexOf(ligne);
+                boiteDeCat.getChildren().remove(ligne);
+            }
         });
 
         cat.setOnDragOver(event -> {

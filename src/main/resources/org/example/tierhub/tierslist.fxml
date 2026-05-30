@@ -15,8 +15,6 @@
                 <HBox prefHeight="36.0" prefWidth="678.0" style="-fx-background-color: #d2d2d2;">
                     <children>
                         <Button mnemonicParsing="false" onAction="#newCat" text="Générer Tier List" />
-                  <Button mnemonicParsing="false" onAction="#addImage" text="New img" />
-                  <Button mnemonicParsing="false" onAction="#addLabel" text="new Label" />
                   <Button mnemonicParsing="false" onAction="#addItem" text="New Item" />
                     </children>
                 </HBox>
@@ -45,7 +43,12 @@
                         <TilePane fx:id="boiteDeEnBas" />
                      </content>
                       </ScrollPane>
-                  <ImageView fx:id="trashcan" fitHeight="150.0" fitWidth="147.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox>
+                     <children>
+                        <ImageView fx:id="trashcan" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                        <ImageView fx:id="modify" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
             </children>

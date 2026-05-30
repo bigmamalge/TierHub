@@ -9,13 +9,15 @@ import javafx.stage.Stage;
 
 public class ControlleurParamTiers {
     @FXML
-    ColorPicker colorPicker;
+    private ColorPicker colorPicker;
 
     @FXML
-    Label label;
+    private Label label;
 
     @FXML
-    TextField textfield;
+    private TextField textfield;
+
+    private boolean delete = false;
 
     public void setColor(Color color) {
         colorPicker.setValue(color);
@@ -38,4 +40,13 @@ public class ControlleurParamTiers {
         stage.close();
     }
 
+    @FXML
+    private void supp(){
+        delete = true;
+        quitter();
+    }
+
+    public boolean isDelete() {
+        return delete;
+    }
 }
