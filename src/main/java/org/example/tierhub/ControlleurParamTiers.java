@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class ControlleurParam {
+public class ControlleurParamTiers {
     @FXML
     ColorPicker colorPicker;
 

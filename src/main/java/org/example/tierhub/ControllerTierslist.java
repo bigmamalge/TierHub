@@ -3,6 +3,7 @@ package org.example.tierhub;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -21,14 +22,16 @@ import java.io.IOException;
 import java.util.Random;
 
 
-public class Controller {
+public class ControllerTierslist {
     @FXML
     private TilePane boiteDeEnBas;
     @FXML
     private VBox boiteDeCat;
+    @FXML
+    ImageView trashcan;
 
 
-    private ImageView img;
+    private Node item;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -36,7 +39,7 @@ public class Controller {
     private void initialize(){
         fileChooser.setTitle("Ouvrir une image");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Fichiers Image", "*.png", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter("Fichiers Image", "*.png", "*.jpg", "*.jpeg", "*.gif")
         );
 
         boiteDeEnBas.setOnDragOver(event -> {
@@ -45,11 +48,11 @@ public class Controller {
         });
 
         boiteDeEnBas.setOnDragDropped(event -> {
-            if(img != null){
-                TilePane base = (TilePane) img.getParent();
-                base.getChildren().remove(img);
+            if(item != null){
+                TilePane base = (TilePane) item.getParent();
+                base.getChildren().remove(item);
 
-                boiteDeEnBas.getChildren().add(img);
+                boiteDeEnBas.getChildren().add(item);
                 event.setDropCompleted(true);
                 event.consume();
             }else{
@@ -57,7 +60,52 @@ public class Controller {
             }
 
         });
+
+        String cheminRessource = getClass().getResource("trash-can.png").toExternalForm();
+        trashcan.setImage(new Image(cheminRessource));
+
+        trashcan.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.MOVE);
+            event.consume();
+        });
+
+        trashcan.setOnDragDropped(event -> {
+            if(item != null){
+                TilePane base = (TilePane) item.getParent();
+                base.getChildren().remove(item);
+                event.setDropCompleted(true);
+                event.consume();
+            }else{
+                event.setDropCompleted(false);
+            }
+
+        });
+
     }
+
+    @FXML
+    private void addItem(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("paramItem.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage newItem = new Stage();
+        newItem.setScene(scene);
+        newItem.initOwner(boiteDeCat.getScene().getWindow());
+        newItem.initModality(Modality.APPLICATION_MODAL);
+        newItem.setTitle("newItem");
+
+        ControlleurParamItem controlleur = loader.getController();
+
+        newItem.showAndWait();
+
+        controlleur.getSortie();
+    }
+
 
     @FXML
     private void addImage(){
@@ -72,26 +120,42 @@ public class Controller {
 
         boiteDeEnBas.getChildren().add(uneImg);
 
+        setDragable(uneImg);
 
-        uneImg.setOnDragDetected(event -> {
-            Dragboard db = uneImg.startDragAndDrop(TransferMode.MOVE);
+
+    }
+
+    @FXML
+    private void addLabel(){
+        StackPane blockLabel = new StackPane();
+        blockLabel.setPrefSize(70,70);
+        Label label = new Label("test");
+        blockLabel.getChildren().add(label);
+
+        boiteDeEnBas.getChildren().add(blockLabel);
+
+        setDragable(blockLabel);
+
+    }
+
+    private void setDragable(Node node){
+        node.setOnDragDetected(event -> {
+            Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
 
             ClipboardContent content = new ClipboardContent();
-            content.putString("img : "+uneImg.hashCode());
+            content.putString("img : "+node.hashCode());
             db.setContent(content);
 
-            Image imagePrevisu = uneImg.snapshot(null, null);
+            Image imagePrevisu = node.snapshot(null, null);
 
             db.setDragView(imagePrevisu);
             db.setDragViewOffsetX(imagePrevisu.getWidth()/2);
             db.setDragViewOffsetY(imagePrevisu.getWidth() / 2);
 
-            img = uneImg;
+            item = node;
             event.consume();
         });
-
     }
-
 
     @FXML
     private void newCat(){
@@ -99,8 +163,6 @@ public class Controller {
 
         newCat(String.format("#%06X", rdm.nextInt(0xFFFFFF + 1)));
     }
-
-
 
     private void newCat(String color){
         HBox ligne = new HBox();
@@ -169,7 +231,7 @@ public class Controller {
         });
 
         engrenage.setOnMouseClicked(event -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("param.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("paramTiers.fxml"));
             Scene scene = null;
             try {
                 scene = new Scene(loader.load());
@@ -183,7 +245,7 @@ public class Controller {
             setting.initModality(Modality.APPLICATION_MODAL);
             setting.setTitle("Setting");
 
-            ControlleurParam controlleur = loader.getController();
+            ControlleurParamTiers controlleur = loader.getController();
 
             controlleur.setColor((Color) titrePan.getBackground().getFills().get(0).getFill());// A faire, ps : la flm
             controlleur.setname(titre.getText());
@@ -200,11 +262,11 @@ public class Controller {
         });
 
         cat.setOnDragDropped(event -> {
-            if(img != null){
-                TilePane base = (TilePane) img.getParent();
-                base.getChildren().remove(img);
+            if(item != null){
+                TilePane base = (TilePane) item.getParent();
+                base.getChildren().remove(item);
 
-                cat.getChildren().add(img);
+                cat.getChildren().add(item);
                 event.setDropCompleted(true);
                 event.consume();
             }else{
