@@ -1,7 +1,9 @@
 package org.example.tierhub;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -9,9 +11,13 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 
@@ -133,7 +139,7 @@ public class Controller {
         Label titre = new Label();
         titre.setText("NomCat");
         titrePan.getChildren().add(titre);
-        titrePan.setStyle("-fx-background-color: "+ color+";");
+        titrePan.setBackground(Background.fill(Color.web(color)));
 
         ligne.getChildren().add(titrePan);
 
@@ -160,6 +166,32 @@ public class Controller {
                 boiteDeCat.getChildren().remove(ligne);
                 boiteDeCat.getChildren().add(pos + 1, ligne);
             }
+        });
+
+        engrenage.setOnMouseClicked(event -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("param.fxml"));
+            Scene scene = null;
+            try {
+                scene = new Scene(loader.load());
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            Stage setting = new Stage();
+            setting.setScene(scene);
+            setting.initOwner(boiteDeCat.getScene().getWindow());
+            setting.initModality(Modality.APPLICATION_MODAL);
+            setting.setTitle("Setting");
+
+            ControlleurParam controlleur = loader.getController();
+
+            controlleur.setColor((Color) titrePan.getBackground().getFills().get(0).getFill());// A faire, ps : la flm
+            controlleur.setname(titre.getText());
+
+            setting.showAndWait();
+
+            titrePan.setBackground(Background.fill(controlleur.getColor()));
+            titre.setText(controlleur.getname());
         });
 
         cat.setOnDragOver(event -> {
