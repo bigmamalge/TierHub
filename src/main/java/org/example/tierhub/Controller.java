@@ -1,31 +1,26 @@
 package org.example.tierhub;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.ImageCursor;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
-import jdk.jshell.execution.Util;
 
 import java.io.File;
+import java.util.Random;
 
 
 public class Controller {
     @FXML
-    private HBox boiteDeEnBas;
+    private TilePane boiteDeEnBas;
     @FXML
-    private VBox boiteDeLigne;
-    @FXML
-    private Button btn;
+    private VBox boiteDeCat;
+
 
     private ImageView img;
 
@@ -37,11 +32,33 @@ public class Controller {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Fichiers Image", "*.png", "*.jpg", "*.jpeg")
         );
+
+        boiteDeEnBas.setOnDragOver(event -> {
+            event.acceptTransferModes(TransferMode.MOVE);
+            event.consume();
+        });
+
+        boiteDeEnBas.setOnDragDropped(event -> {
+            if(img != null){
+                TilePane base = (TilePane) img.getParent();
+                base.getChildren().remove(img);
+
+                boiteDeEnBas.getChildren().add(img);
+                event.setDropCompleted(true);
+                event.consume();
+            }else{
+                event.setDropCompleted(false);
+            }
+
+        });
     }
 
     @FXML
     private void addImage(){
         File fichierimg = fileChooser.showOpenDialog(null);
+        if (fichierimg == null){
+            return;
+        }
         String chemin = fichierimg.toURI().toString();
         ImageView uneImg = new ImageView(chemin);
         uneImg.setFitWidth(70);
@@ -57,9 +74,11 @@ public class Controller {
             content.putString("img : "+uneImg.hashCode());
             db.setContent(content);
 
-            db.setDragView(uneImg.getImage());
-            db.setDragViewOffsetX(uneImg.getFitWidth() / 2);
-            db.setDragViewOffsetY(uneImg.getFitHeight() / 2);
+            Image imagePrevisu = uneImg.snapshot(null, null);
+
+            db.setDragView(imagePrevisu);
+            db.setDragViewOffsetX(imagePrevisu.getWidth()/2);
+            db.setDragViewOffsetY(imagePrevisu.getWidth() / 2);
 
             img = uneImg;
             event.consume();
@@ -67,15 +86,81 @@ public class Controller {
 
     }
 
+
     @FXML
     private void newCat(){
-        HBox cat = new HBox();
-        boiteDeLigne.getChildren().add(cat);
-        cat.setMaxWidth(Double.MAX_VALUE);
-        cat.setMinHeight(80);
-        cat.setStyle("-fx-border-color: gray; -fx-border-width: 1;");
+        Random rdm = new Random();
+
+        newCat(String.format("#%06X", rdm.nextInt(0xFFFFFF + 1)));
+    }
 
 
+
+    private void newCat(String color){
+        HBox ligne = new HBox();
+        ligne.setPrefHeight(70);
+
+        HBox paramPan = new HBox();
+        paramPan.setAlignment(Pos.CENTER);
+        String cheminRessource = getClass().getResource("engrenage.png").toExternalForm();
+        ImageView engrenage = new ImageView(cheminRessource);
+        engrenage.setFitHeight(40);
+        engrenage.setFitWidth(40);
+        paramPan.getChildren().add(engrenage);
+
+        VBox flechePan = new VBox();
+        flechePan.setAlignment(Pos.CENTER);
+        cheminRessource = getClass().getResource("flecheHaut.png").toExternalForm();
+        ImageView flecheHaut = new ImageView(cheminRessource);
+        flecheHaut.setFitHeight(20);
+        flecheHaut.setFitWidth(20);
+
+
+        cheminRessource = getClass().getResource("flecheBas.png").toExternalForm();
+        ImageView flecheBas = new ImageView(cheminRessource);
+        flecheBas.setFitHeight(20);
+        flecheBas.setFitWidth(20);
+
+        flechePan.getChildren().add(flecheHaut);
+        flechePan.getChildren().add(flecheBas);
+        paramPan.getChildren().add(flechePan);
+
+        ligne.getChildren().add(paramPan);
+
+
+        StackPane titrePan = new StackPane();
+        titrePan.setPrefWidth(100);
+        Label titre = new Label();
+        titre.setText("NomCat");
+        titrePan.getChildren().add(titre);
+        titrePan.setStyle("-fx-background-color: "+ color+";");
+
+        ligne.getChildren().add(titrePan);
+
+        TilePane cat  = new TilePane();
+        HBox.setHgrow(cat, Priority.ALWAYS);
+        cat.setStyle("-fx-background-color: #c7c8c9 ; -fx-border-color: #7c7c7d;");
+
+
+        ligne.getChildren().add(cat);
+
+        boiteDeCat.getChildren().add(ligne);
+
+        flecheHaut.setOnMouseClicked(event -> {
+            int pos = boiteDeCat.getChildren().indexOf(ligne);
+            if(pos > 0){
+                boiteDeCat.getChildren().remove(ligne);
+                boiteDeCat.getChildren().add(pos - 1, ligne);
+            }
+
+        });
+        flecheBas.setOnMouseClicked(event -> {
+            int pos = boiteDeCat.getChildren().indexOf(ligne);
+            if(pos < boiteDeCat.getChildren().size() -1){
+                boiteDeCat.getChildren().remove(ligne);
+                boiteDeCat.getChildren().add(pos + 1, ligne);
+            }
+        });
 
         cat.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -84,7 +169,7 @@ public class Controller {
 
         cat.setOnDragDropped(event -> {
             if(img != null){
-                HBox base = (HBox) img.getParent();
+                TilePane base = (TilePane) img.getParent();
                 base.getChildren().remove(img);
 
                 cat.getChildren().add(img);
