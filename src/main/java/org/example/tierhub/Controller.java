@@ -29,7 +29,6 @@ public class Controller {
     private boolean isLightMode = true;
     public void changeMode(ActionEvent event){
         Scene scene = colour.getScene();
-        System.out.println(isLightMode);
         String darkCSS = getClass().getResource("application-dark.css").toExternalForm();
         String lightCSS = getClass().getResource("application-light.css").toExternalForm();
 

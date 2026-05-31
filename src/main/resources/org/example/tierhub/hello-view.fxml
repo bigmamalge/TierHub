@@ -24,9 +24,6 @@
                      <HBox.margin>
                         <Insets left="250.0" right="20.0" top="20.0" />
                      </HBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="16.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
-                     </graphic>
                   </Button>
                     </children>
                 </HBox>
