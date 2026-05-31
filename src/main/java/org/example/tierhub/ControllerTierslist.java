@@ -1,5 +1,7 @@
 package org.example.tierhub;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -13,12 +15,16 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.model.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -34,6 +40,9 @@ public class ControllerTierslist {
 
 
     private Node item;
+
+    private final ObjectMapper  mapper = new ObjectMapper();
+    private final File fichierJson = new File("tierList.json");
 
     @FXML
     private void initialize(){
@@ -168,6 +177,7 @@ public class ControllerTierslist {
         }
     }
 
+
     private void setDragable(Node node){
         node.setOnDragDetected(event -> {
             Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
@@ -191,10 +201,10 @@ public class ControllerTierslist {
     private void newCat(){
         Random rdm = new Random();
 
-        newCat(String.format("#%06X", rdm.nextInt(0xFFFFFF + 1)));
+        newCat(String.format("#%06X", rdm.nextInt(0xFFFFFF + 1)),"Nom Cat");
     }
 
-    private void newCat(String color){
+    private void newCat(String color, String name){
         HBox ligne = new HBox();
         ligne.setPrefHeight(70);
 
@@ -229,7 +239,7 @@ public class ControllerTierslist {
         StackPane titrePan = new StackPane();
         titrePan.setPrefWidth(100);
         Label titre = new Label();
-        titre.setText("NomCat");
+        titre.setText(name);
         titrePan.getChildren().add(titre);
         titrePan.setBackground(Background.fill(Color.web(color)));
 
@@ -309,6 +319,130 @@ public class ControllerTierslist {
             }
 
         });
+    }
+
+    @FXML
+    private void saveAsJson(){
+        TierList tierlist = new TierList(new ArrayList<>());
+
+        Tier tierDeBase = new Tier(new ArrayList<>(),"Tier de en Bas","pas de couleur");
+        for (Node child : boiteDeEnBas.getChildren()) {
+            if(child instanceof StackPane){
+                StackPane stackPane = (StackPane) child;
+                Label label = (Label) stackPane.getChildren().get(0);
+                Color color = (Color) stackPane.getBackground().getFills().get(0).getFill();
+                String couleur = "#" + color.toString().substring(2,8).toUpperCase();
+                ItemTexte itemTexte = new ItemTexte(couleur, label.getText());
+                tierDeBase.getItems().add(itemTexte);
+            }else if(child instanceof ImageView){
+                ImageView imageView = (ImageView) child;
+                byte[] dataimage = convertImageEnByte(imageView.getImage());
+                ItemImage itemImage = new ItemImage(dataimage);
+                tierDeBase.getItems().add(itemImage);
+            }
+        }
+        tierlist.getTiers().add(tierDeBase);
+
+        for (Node node : boiteDeCat.getChildren()) {
+            if(node instanceof HBox){
+                TilePane tilePane = (TilePane) ((HBox) node).getChildren().get(2);
+                StackPane titrePane = (StackPane) ((HBox) node).getChildren().get(1);
+                Color titreColor = (Color) titrePane.getBackground().getFills().get(0).getFill();
+                String titreCouleur = "#" + titreColor.toString().substring(2,8).toUpperCase();
+                Label titre = (Label) titrePane.getChildren().get(0);
+
+                Tier tier = new Tier(new ArrayList<>(),titre.getText(),titreCouleur);
+
+                for (Node child : tilePane.getChildren()) {
+                    if(child instanceof StackPane){
+                        StackPane stackPane = (StackPane) child;
+                        Label label = (Label) stackPane.getChildren().get(0);
+                        Color color = (Color) stackPane.getBackground().getFills().get(0).getFill();
+                        String couleur = "#" + color.toString().substring(2,8).toUpperCase();
+                        ItemTexte itemTexte = new ItemTexte(couleur, label.getText());
+                        tier.getItems().add(itemTexte);
+                    }else if(child instanceof ImageView){
+                        ImageView imageView = (ImageView) child;
+                        byte[] dataimage = convertImageEnByte(imageView.getImage());
+                        ItemImage itemImage = new ItemImage(dataimage);
+                        tier.getItems().add(itemImage);
+                    }
+
+                }
+                tierlist.getTiers().add(tier);
+            }
+        }
+
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(fichierJson,tierlist);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private byte[] convertImageEnByte(Image image){
+        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try {
+            ImageIO.write(bImage, "png", baos);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @FXML
+    private void chargerJsonSave(){
+        try {
+            TierList tierlist = mapper.readValue(fichierJson, TierList.class);
+            for(Tier tier : tierlist.getTiers()){
+                TilePane tilePane;
+                if(tier.equals(tierlist.getTiers().get(0))){
+                    tilePane = boiteDeEnBas;
+                }
+                else{
+                    newCat(tier.getColor(), tier.getName());
+                    HBox hBox = (HBox) boiteDeCat.getChildren().get(boiteDeCat.getChildren().size() -1);
+                    tilePane = (TilePane) hBox.getChildren().get(2);
+                }
+                for(Item item : tier.getItems()){
+                    if (item instanceof ItemTexte){
+                        ItemTexte itemTexte = (ItemTexte) item;
+                        addTextJson(tilePane,Color.web(itemTexte.getColor()),itemTexte.getTexte());
+                    }
+                    if (item instanceof ItemImage){
+                        ItemImage itemImage = (ItemImage) item;
+                        Image img = itemImage.getJavaFXImage();
+                        addImageJson(tilePane,img);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addImageJson(TilePane tilePane, Image img){
+        ImageView uneImg = new ImageView(img);
+        uneImg.setFitWidth(70);
+        uneImg.setFitHeight(70);
+
+        tilePane.getChildren().add(uneImg);
+
+        setDragable(uneImg);
+    }
+    private void addTextJson(TilePane tilePane, Color color, String txt){
+        StackPane blockLabel = new StackPane();
+        blockLabel.setPrefSize(70,70);
+        Label label = new Label(txt);
+        blockLabel.setBackground(Background.fill(color));
+        blockLabel.getChildren().add(label);
+
+        tilePane.getChildren().add(blockLabel);
+
+        setDragable(blockLabel);
     }
 
 

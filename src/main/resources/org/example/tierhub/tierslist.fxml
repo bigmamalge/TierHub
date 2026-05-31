@@ -16,6 +16,8 @@
                     <children>
                         <Button mnemonicParsing="false" onAction="#newCat" text="Générer Tier List" />
                   <Button mnemonicParsing="false" onAction="#addItem" text="New Item" />
+                  <Button mnemonicParsing="false" onAction="#saveAsJson" prefHeight="26.0" prefWidth="98.0" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#chargerJsonSave" prefHeight="26.0" prefWidth="114.0" text="Charge" />
                     </children>
                 </HBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
