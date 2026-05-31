@@ -16,6 +16,7 @@ import java.io.File;
 
 
 public class ControlleurParamItem {
+
     @FXML
     private TextField imageLink;
     @FXML
@@ -42,6 +43,7 @@ public class ControlleurParamItem {
     @FXML
     private void initialize() {
         erreurTxt.setText("");
+        erreurTxtJeu.setText("");
     }
     @FXML
     private void chargerImage() {

@@ -1,7 +1,5 @@
 package org.example.tierhub;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -18,10 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.model.*;
+import org.example.service.Jackson.Transform;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,15 +30,21 @@ public class ControllerTierslist {
     @FXML
     private VBox boiteDeCat;
     @FXML
-    ImageView trashcan;
+    private ImageView trashcan;
     @FXML
-    ImageView modify;
+    private ImageView modify;
 
 
     private Node item;
 
-    private final ObjectMapper  mapper = new ObjectMapper();
+
     private final File fichierJson = new File("tierList.json");
+    private final Transform transform = new Transform();
+
+    @FXML
+    private Label name;
+    @FXML
+    private ImageView imgLogo;
 
     @FXML
     private void initialize(){
@@ -115,6 +117,10 @@ public class ControllerTierslist {
             }
 
         });
+
+        name.setText("My TierList");
+        cheminRessource = getClass().getResource("TierHub.png").toExternalForm();
+        imgLogo.setImage(new Image(cheminRessource));
 
     }
 
@@ -333,7 +339,9 @@ public class ControllerTierslist {
 
     @FXML
     private void saveAsJson(){
-        TierList tierlist = new TierList(new ArrayList<>());
+        byte[] dataimageLogo = transform.convertImageEnByte(imgLogo.getImage());
+        ItemImage itemImageLogo = new ItemImage(dataimageLogo);
+        TierList tierlist = new TierList(new ArrayList<>(),itemImageLogo,name.getText());
 
         Tier tierDeBase = new Tier(new ArrayList<>(),"Tier de en Bas","pas de couleur");
         for (Node child : boiteDeEnBas.getChildren()) {
@@ -346,7 +354,7 @@ public class ControllerTierslist {
                 tierDeBase.getItems().add(itemTexte);
             }else if(child instanceof ImageView){
                 ImageView imageView = (ImageView) child;
-                byte[] dataimage = convertImageEnByte(imageView.getImage());
+                byte[] dataimage = transform.convertImageEnByte(imageView.getImage());
                 ItemImage itemImage = new ItemImage(dataimage);
                 tierDeBase.getItems().add(itemImage);
             }
@@ -373,7 +381,7 @@ public class ControllerTierslist {
                         tier.getItems().add(itemTexte);
                     }else if(child instanceof ImageView){
                         ImageView imageView = (ImageView) child;
-                        byte[] dataimage = convertImageEnByte(imageView.getImage());
+                        byte[] dataimage = transform.convertImageEnByte(imageView.getImage());
                         ItemImage itemImage = new ItemImage(dataimage);
                         tier.getItems().add(itemImage);
                     }
@@ -383,57 +391,43 @@ public class ControllerTierslist {
             }
         }
 
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(fichierJson,tierlist);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        transform.setJson("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json", tierlist);
 
     }
 
-    private byte[] convertImageEnByte(Image image){
-        BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        try {
-            ImageIO.write(bImage, "png", baos);
-            return baos.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @FXML
     private void chargerJsonSave(){
         boiteDeEnBas.getChildren().clear();
         boiteDeCat.getChildren().clear();
-        try {
-            TierList tierlist = mapper.readValue(fichierJson, TierList.class);
-            for(Tier tier : tierlist.getTiers()){
-                TilePane tilePane;
-                if(tier.equals(tierlist.getTiers().get(0))){
-                    tilePane = boiteDeEnBas;
+
+        TierList tierlist = transform.getJson("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+        imgLogo.setImage(tierlist.getImg().getJavaFXImage());
+        name.setText(tierlist.getName());
+
+        for(Tier tier : tierlist.getTiers()){
+            TilePane tilePane;
+            if(tier.equals(tierlist.getTiers().get(0))){
+                tilePane = boiteDeEnBas;
+            }
+            else{
+                newCat(tier.getColor(), tier.getName());
+                HBox hBox = (HBox) boiteDeCat.getChildren().get(boiteDeCat.getChildren().size() -1);
+                tilePane = (TilePane) hBox.getChildren().get(2);
+            }
+            for(Item item : tier.getItems()){
+                if (item instanceof ItemTexte){
+                    ItemTexte itemTexte = (ItemTexte) item;
+                    addTextJson(tilePane,Color.web(itemTexte.getColor()),itemTexte.getTexte());
                 }
-                else{
-                    newCat(tier.getColor(), tier.getName());
-                    HBox hBox = (HBox) boiteDeCat.getChildren().get(boiteDeCat.getChildren().size() -1);
-                    tilePane = (TilePane) hBox.getChildren().get(2);
-                }
-                for(Item item : tier.getItems()){
-                    if (item instanceof ItemTexte){
-                        ItemTexte itemTexte = (ItemTexte) item;
-                        addTextJson(tilePane,Color.web(itemTexte.getColor()),itemTexte.getTexte());
-                    }
-                    if (item instanceof ItemImage){
-                        ItemImage itemImage = (ItemImage) item;
-                        Image img = itemImage.getJavaFXImage();
-                        addImageJson(tilePane,img);
-                    }
+                if (item instanceof ItemImage){
+                    ItemImage itemImage = (ItemImage) item;
+                    Image img = itemImage.getJavaFXImage();
+                    addImageJson(tilePane,img);
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+
     }
 
     private void addImageJson(TilePane tilePane, Image img){
@@ -455,6 +449,33 @@ public class ControllerTierslist {
         tilePane.getChildren().add(blockLabel);
 
         setDragable(blockLabel);
+    }
+
+    @FXML
+    private void tierListSetting(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("paramTierList.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage param = new Stage();
+        param.setScene(scene);
+        param.initOwner(boiteDeCat.getScene().getWindow());
+        param.initModality(Modality.APPLICATION_MODAL);
+        param.setTitle("parametre de la tierList");
+
+        ControlleurParamTierlist controlleur = loader.getController();
+
+        controlleur.setImage(imgLogo.getImage());
+        controlleur.setNom(name.getText());
+
+        param.showAndWait();
+
+        imgLogo.setImage(controlleur.getImage());
+        name.setText(controlleur.getNom());
     }
 
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tierhub.ControlleurTierHub">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="600.0" style="-fx-background-color: #d2d2d2;">
+         <children>
+            <ImageView fitHeight="32.0" fitWidth="103.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@TierHub.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <HBox>
+         <VBox.margin>
+            <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+         </VBox.margin>
+         <children>
+            <TextField prefHeight="26.0" prefWidth="250.0" promptText="Rechercher TierList">
+               <HBox.margin>
+                  <Insets left="50.0" right="10.0" />
+               </HBox.margin>
+            </TextField>
+            <HBox alignment="CENTER" prefHeight="26.0" prefWidth="189.0">
+               <children>
+                  <ImageView fitHeight="28.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@PlusCircle.png" />
+                     </image>
+                  </ImageView>
+                  <Label prefHeight="18.0" prefWidth="139.0" text="Crée une TierList" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="305.0" prefWidth="600.0">
+         <content>
+            <FlowPane fx:id="tierListGroup" prefHeight="200.0" prefWidth="200.0" />
+         </content>
+         <VBox.margin>
+            <Insets bottom="20.0" left="50.0" right="50.0" top="10.0" />
+         </VBox.margin>
+      </ScrollPane>
+   </children>
+</VBox>
