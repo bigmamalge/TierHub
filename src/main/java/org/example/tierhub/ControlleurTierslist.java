@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class ControllerTierslist {
+public class ControlleurTierslist {
     @FXML
     private TilePane boiteDeEnBas;
     @FXML
@@ -397,7 +397,7 @@ public class ControllerTierslist {
 
 
     @FXML
-    private void chargerJsonSave(){
+    public void chargerJsonSave(){
         boiteDeEnBas.getChildren().clear();
         boiteDeCat.getChildren().clear();
 
@@ -452,7 +452,7 @@ public class ControllerTierslist {
     }
 
     @FXML
-    private void tierListSetting(){
+    public void tierListSetting(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("paramTierList.fxml"));
         Scene scene = null;
         try {
@@ -478,6 +478,9 @@ public class ControllerTierslist {
         name.setText(controlleur.getNom());
     }
 
+    public void setName(String name){
+        this.name.setText(name);
+    }
 
 
 }
