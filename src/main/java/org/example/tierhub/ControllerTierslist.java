@@ -175,6 +175,16 @@ public class ControllerTierslist {
 
             setDragable(blockLabel);
         }
+
+        if (controlleur.getSortie() == 3){
+            ImageView uneImg = new ImageView(controlleur.getImageJeu());
+            uneImg.setFitWidth(70);
+            uneImg.setFitHeight(70);
+
+            tilePane.getChildren().add(uneImg);
+
+            setDragable(uneImg);
+        }
     }
 
 
@@ -395,6 +405,8 @@ public class ControllerTierslist {
 
     @FXML
     private void chargerJsonSave(){
+        boiteDeEnBas.getChildren().clear();
+        boiteDeCat.getChildren().clear();
         try {
             TierList tierlist = mapper.readValue(fichierJson, TierList.class);
             for(Tier tier : tierlist.getTiers()){
