@@ -1,18 +1,18 @@
 
 .root {
-    -fx-accent: #ff8800;
+    -fx-accent: #D24364;
     -fx-focus-color: -fx-accent;
     -fx-base: #EEEEEE;
-    -fx-control-inner-background: #172d40;/*derive(-fx-base, 25%);*/
+    -fx-control-inner-background: #D2D2D2;/*derive(-fx-base, 25%);*/
     -fx-control-inner-background-alt: -fx-control-inner-background ;
 }
 
 .label{
-    -fx-text-fill: black;
+    -fx-text-fill: #2B2B2B;
 }
 
 .text-field {
-    -fx-prompt-text-fill: gray;
+    -fx-prompt-text-fill: #2B2B2B;
 }
 
 .titulo{
@@ -25,7 +25,7 @@
 }
 
 .button:hover{
-    -fx-text-fill: white;
+    -fx-text-fill: #2B2B2B;
 }
 
 .separator *.line {
@@ -68,4 +68,14 @@
 .table-row-cell{
     -fx-border-color: transparent;
     -fx-table-cell-border-color:transparent;
+}
+
+.tier1 {
+    -fx-background-color: #E2E2E2 ;
+    -fx-border-color: #44633F;
+}
+
+.tier2 {
+    -fx-background-color: #D2D2D2 ;
+    -fx-border-color: #44633F;
 }

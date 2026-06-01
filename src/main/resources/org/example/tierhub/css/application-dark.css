@@ -1,10 +1,11 @@
 
 .root {
-    -fx-accent: #ff8800;
+    -fx-accent: #D24364;
     -fx-focus-color: -fx-accent;
-    -fx-base: #09121a;
-    -fx-control-inner-background: #172d40;/*derive(-fx-base, 25%);*/
-    -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-base: #172d40;
+    -fx-background : -fx-base;
+    -fx-control-background: #111111;
+    -fx-control-background-alt: -fx-control-inner-background ;
 }
 
 .label{
@@ -12,7 +13,7 @@
 }
 
 .text-field {
-    -fx-prompt-text-fill: gray;
+    -fx-prompt-text-fill: #EAEAEA;
 }
 
 .titulo{
@@ -68,4 +69,18 @@
 .table-row-cell{
     -fx-border-color: transparent;
     -fx-table-cell-border-color:transparent;
+}
+
+.hbox{
+    -fx-background-color: #1f3d57;
+}
+
+.tier1 {
+    -fx-background-color: #172D40 ;
+    -fx-border-color: #7c7c7d;
+}
+
+.tier2 {
+    -fx-background-color: #294257 ;
+    -fx-border-color: #7c7c7d;
 }
