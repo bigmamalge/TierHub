@@ -19,6 +19,8 @@ public class ControlleurParamTierlist {
     private Label erreurTxt;
     @FXML
     private TextField nom;
+    @FXML
+    private TextField itemSize;
 
     FileChooser fileChooser = new FileChooser();
 
@@ -64,5 +66,13 @@ public class ControlleurParamTierlist {
     }
     public void setImage(Image image){
         this.imagePreview.setImage(image);
+    }
+
+    public void setSize(int size){
+        itemSize.setText(Integer.toString(size));
+    }
+
+    public int getSize(){
+        return Integer.parseInt(itemSize.getText());
     }
 }

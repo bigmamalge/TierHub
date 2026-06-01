@@ -23,9 +23,11 @@
             <ImageView fx:id="imagePreview" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </StackPane>
-      <Label fx:id="erreurTxt" layoutX="227.0" layoutY="221.0" prefHeight="23.0" prefWidth="271.0" text="ERREUR" textFill="RED" />
-      <Button layoutX="305.0" layoutY="180.0" mnemonicParsing="false" onAction="#chargerExplorateur" prefHeight="26.0" prefWidth="179.0" text="Ouvrir l'explorateur de fichier" />
+      <Label fx:id="erreurTxt" layoutX="216.0" layoutY="273.0" prefHeight="23.0" prefWidth="271.0" text="ERREUR" textFill="RED" />
+      <Button layoutX="209.0" layoutY="180.0" mnemonicParsing="false" onAction="#chargerExplorateur" prefHeight="26.0" prefWidth="179.0" text="Ouvrir l'explorateur de fichier" />
       <Label layoutX="26.0" layoutY="23.0" prefHeight="26.0" prefWidth="190.0" text="Nom de la TierList" />
       <TextField fx:id="nom" layoutX="26.0" layoutY="49.0" prefHeight="26.0" prefWidth="457.0" promptText="Ma tierList trop cool" />
+      <Label layoutX="209.0" layoutY="212.0" prefHeight="18.0" prefWidth="84.0" text="Taille des Item :" />
+      <TextField fx:id="itemSize" layoutX="211.0" layoutY="230.0" prefHeight="26.0" prefWidth="106.0" promptText="100" />
    </children>
 </AnchorPane>

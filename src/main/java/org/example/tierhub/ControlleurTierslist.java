@@ -1,6 +1,5 @@
 package org.example.tierhub;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -46,6 +45,8 @@ public class ControlleurTierslist {
     private final File fichierJson = new File("tierList.json");
     private final Transform transform = new Transform();
 
+    private int itemSize;
+
     @FXML
     private Label name;
     @FXML
@@ -56,6 +57,8 @@ public class ControlleurTierslist {
         javafx.application.Platform.runLater(() -> {
             changeMode();
         });
+
+        itemSize = 100;
 
         boiteDeEnBas.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -170,8 +173,8 @@ public class ControlleurTierslist {
 
         if (controlleur.getSortie() == 1){
             ImageView uneImg = new ImageView(controlleur.getImage());
-            uneImg.setFitWidth(70);
-            uneImg.setFitHeight(70);
+            uneImg.setFitWidth(itemSize);
+            uneImg.setFitHeight(itemSize);
 
             tilePane.getChildren().add(uneImg);
 
@@ -180,7 +183,7 @@ public class ControlleurTierslist {
 
         if (controlleur.getSortie() == 2){
             StackPane blockLabel = new StackPane();
-            blockLabel.setPrefSize(70,70);
+            blockLabel.setPrefSize(itemSize, itemSize);
             Label label = new Label(controlleur.getText());
             blockLabel.setBackground(Background.fill(controlleur.getColor()));
             blockLabel.getChildren().add(label);
@@ -192,8 +195,8 @@ public class ControlleurTierslist {
 
         if (controlleur.getSortie() == 3){
             ImageView uneImg = new ImageView(controlleur.getImageJeu());
-            uneImg.setFitWidth(70);
-            uneImg.setFitHeight(70);
+            uneImg.setFitWidth(itemSize);
+            uneImg.setFitHeight(itemSize);
 
             tilePane.getChildren().add(uneImg);
 
@@ -230,7 +233,7 @@ public class ControlleurTierslist {
 
     private void newCat(String color, String name){
         HBox ligne = new HBox();
-        ligne.setPrefHeight(70);
+        ligne.setPrefHeight(itemSize);
 
         HBox paramPan = new HBox();
         paramPan.setAlignment(Pos.CENTER);
@@ -440,8 +443,8 @@ public class ControlleurTierslist {
 
     private void addImageJson(TilePane tilePane, Image img){
         ImageView uneImg = new ImageView(img);
-        uneImg.setFitWidth(70);
-        uneImg.setFitHeight(70);
+        uneImg.setFitWidth(itemSize);
+        uneImg.setFitHeight(itemSize);
 
         tilePane.getChildren().add(uneImg);
 
@@ -449,7 +452,7 @@ public class ControlleurTierslist {
     }
     private void addTextJson(TilePane tilePane, Color color, String txt){
         StackPane blockLabel = new StackPane();
-        blockLabel.setPrefSize(70,70);
+        blockLabel.setPrefSize(itemSize, itemSize);
         Label label = new Label(txt);
         blockLabel.setBackground(Background.fill(color));
         blockLabel.getChildren().add(label);
@@ -479,11 +482,14 @@ public class ControlleurTierslist {
 
         controlleur.setImage(imgLogo.getImage());
         controlleur.setNom(name.getText());
+        controlleur.setSize(itemSize);
 
         param.showAndWait();
 
         imgLogo.setImage(controlleur.getImage());
         name.setText(controlleur.getNom());
+        itemSize = controlleur.getSize();
+        setSize();
     }
 
     public void setName(String name){
@@ -568,7 +574,28 @@ public class ControlleurTierslist {
             boiteDeEnBas.getChildren().addAll(cat.getChildren());
 
         }
+    }
 
+    private void setSize(){
+        for(Node node : boiteDeCat.getChildren()){
+            HBox hbox = (HBox) node;
+            TilePane cat = (TilePane) hbox.getChildren().get(2);
+            hbox.setPrefHeight(itemSize);
+
+            for (Node child : cat.getChildren()) {
+                if(child instanceof StackPane){
+                    StackPane stackPane = (StackPane) child;
+                    stackPane.setPrefSize(itemSize, itemSize);
+
+                }else if(child instanceof ImageView){
+                    ImageView imageView = (ImageView) child;
+                    imageView.setFitWidth(itemSize);
+                    imageView.setFitHeight(itemSize);
+
+                }
+            }
+
+        }
     }
 
 
