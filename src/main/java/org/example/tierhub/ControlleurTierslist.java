@@ -559,5 +559,17 @@ public class ControlleurTierslist {
 
     }
 
+    @FXML
+    private void resetItem(){
+        for(Node node : boiteDeCat.getChildren()){
+            HBox hbox = (HBox) node;
+            TilePane cat = (TilePane) hbox.getChildren().get(2);
+
+            boiteDeEnBas.getChildren().addAll(cat.getChildren());
+
+        }
+
+    }
+
 
 }
