@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -48,10 +49,13 @@ public class ControlleurTierslist {
     @FXML
     private ImageView imgLogo;
 
+    private boolean colorbool = true;
+
     @FXML
     private void initialize(){
         javafx.application.Platform.runLater(() -> {
             changeMode();
+            setcolortier();
         });
 
         boiteDeEnBas.setOnDragOver(event -> {
@@ -231,22 +235,27 @@ public class ControlleurTierslist {
 
         HBox paramPan = new HBox();
         paramPan.setAlignment(Pos.CENTER);
-        String cheminRessource = getClass().getResource("engrenage.png").toExternalForm();
+        String cheminRessource = getClass().getResource("engrenage2.png").toExternalForm();
         ImageView engrenage = new ImageView(cheminRessource);
+        engrenage.getStyleClass().add("icons");
         engrenage.setFitHeight(40);
         engrenage.setFitWidth(40);
         paramPan.getChildren().add(engrenage);
 
         VBox flechePan = new VBox();
         flechePan.setAlignment(Pos.CENTER);
-        cheminRessource = getClass().getResource("flecheHaut.png").toExternalForm();
+        cheminRessource = getClass().getResource("up-arrow2.png").toExternalForm();
         ImageView flecheHaut = new ImageView(cheminRessource);
+        flecheHaut.getStyleClass().add("icons");
         flecheHaut.setFitHeight(20);
         flecheHaut.setFitWidth(20);
 
 
-        cheminRessource = getClass().getResource("flecheBas.png").toExternalForm();
+        cheminRessource = getClass().getResource("down-arrow2.png").toExternalForm();
         ImageView flecheBas = new ImageView(cheminRessource);
+        ColorAdjust monochrome = new ColorAdjust();
+        monochrome.setSaturation(-1.0);
+        flecheBas.getStyleClass().add("icons");
         flecheBas.setFitHeight(20);
         flecheBas.setFitWidth(20);
 
@@ -268,12 +277,12 @@ public class ControlleurTierslist {
 
         TilePane cat  = new TilePane();
         HBox.setHgrow(cat, Priority.ALWAYS);
-        cat.setStyle("-fx-background-color: #c7c8c9 ; -fx-border-color: #7c7c7d;");
-
+        //cat.setStyle("-fx-background-color: #c7c8c9 ; -fx-border-color: #7c7c7d;");
 
         ligne.getChildren().add(cat);
 
         boiteDeCat.getChildren().add(ligne);
+        setcolortier();
 
         flecheHaut.setOnMouseClicked(event -> {
             int pos = boiteDeCat.getChildren().indexOf(ligne);
@@ -281,6 +290,7 @@ public class ControlleurTierslist {
                 boiteDeCat.getChildren().remove(ligne);
                 boiteDeCat.getChildren().add(pos - 1, ligne);
             }
+            setcolortier();
 
         });
         flecheBas.setOnMouseClicked(event -> {
@@ -289,6 +299,7 @@ public class ControlleurTierslist {
                 boiteDeCat.getChildren().remove(ligne);
                 boiteDeCat.getChildren().add(pos + 1, ligne);
             }
+            setcolortier();
         });
 
         engrenage.setOnMouseClicked(event -> {
@@ -340,6 +351,21 @@ public class ControlleurTierslist {
             }
 
         });
+    }
+
+    private void setcolortier(){
+        for(Node node : boiteDeCat.getChildren()){
+            HBox hbox = (HBox) node;
+            TilePane cat = (TilePane) hbox.getChildren().get(2);
+            if(colorbool){
+                cat.setStyle("-fx-background-color: #172D40 ; -fx-border-color: #7c7c7d;");
+            }else{
+                cat.setStyle("-fx-background-color: #294257 ; -fx-border-color: #7c7c7d;");
+            }
+            colorbool = !colorbool;
+        }
+
+
     }
 
     @FXML

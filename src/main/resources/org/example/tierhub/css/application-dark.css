@@ -1,10 +1,11 @@
 
 .root {
-    -fx-accent: #ff8800;
+    -fx-accent: #D24364;
     -fx-focus-color: -fx-accent;
-    -fx-base: #09121a;
-    -fx-control-inner-background: #172d40;/*derive(-fx-base, 25%);*/
-    -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-base: #172d40;
+    -fx-background : -fx-base;
+    -fx-control-background: #172d40;
+    -fx-control-background-alt: -fx-control-inner-background ;
 }
 
 .label{
@@ -12,7 +13,7 @@
 }
 
 .text-field {
-    -fx-prompt-text-fill: gray;
+    -fx-prompt-text-fill: #EAEAEA;
 }
 
 .titulo{
@@ -69,3 +70,14 @@
     -fx-border-color: transparent;
     -fx-table-cell-border-color:transparent;
 }
+
+.hbox{
+    -fx-background-color: #1f3d57;
+}
+
+.icons {
+    position:absolute;
+    display:none;
+    content:"down-arrow.png";
+}
+.icons:hover {display:block}
