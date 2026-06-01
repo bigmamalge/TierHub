@@ -21,6 +21,9 @@ import org.example.service.Jackson.Transform;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -500,6 +503,59 @@ public class ControlleurTierslist {
         }else{
             scene.getStylesheets().add(lightCSS);
         }
+
+    }
+
+    public void suppTl(){
+        Path cheminDuFichier = Paths.get("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+        try {
+            boolean estSupprime = Files.deleteIfExists(cheminDuFichier);
+
+            if (estSupprime) {
+                System.out.println("Le fichier a été supprimé avec succès ! 🗑️");
+            } else {
+                System.out.println("Le fichier n'existait pas, il n'y a rien à supprimer.");
+            }
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        quitter();
+    }
+
+    @FXML
+    private void quitter(){
+        Stage stage = (Stage) boiteDeCat.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    public void dupliquer(){
+        saveAsJson();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("tierlist.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage tierlistPage = new Stage();
+        tierlistPage.setScene(scene);
+        tierlistPage.initOwner(boiteDeCat.getScene().getWindow());
+        tierlistPage.initModality(Modality.APPLICATION_MODAL);
+        tierlistPage.setTitle(name.getText());
+
+        ControlleurTierslist controlleur = loader.getController();
+        controlleur.setName(name.getText());
+
+
+        controlleur.chargerJsonSave();
+        tierlistPage.show();
+
+        controlleur.setName(name.getText()+"-Copy");
+        controlleur.tierListSetting();
 
     }
 

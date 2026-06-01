@@ -33,6 +33,8 @@
                         <MenuItem mnemonicParsing="false" onAction="#tierListSetting" text="TierList setting" />
                         <MenuItem mnemonicParsing="false" onAction="#changeMode" text="Changer Mode Sombre/clair" />
                       <MenuItem mnemonicParsing="false" onAction="#saveAsJson" text="Sauvegarder" />
+                        <MenuItem mnemonicParsing="false" onAction="#dupliquer" text="Dupliquer" />
+                        <MenuItem mnemonicParsing="false" onAction="#suppTl" text="Supprimer la TierList" />
                     </items>
                   </MenuButton>
                     </children>
