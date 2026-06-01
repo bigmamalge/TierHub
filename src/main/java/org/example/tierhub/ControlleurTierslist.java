@@ -1,5 +1,6 @@
 package org.example.tierhub;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -36,6 +37,7 @@ public class ControlleurTierslist {
 
 
     private Node item;
+    private boolean LightMode = true;
 
 
     private final File fichierJson = new File("tierList.json");
@@ -48,6 +50,9 @@ public class ControlleurTierslist {
 
     @FXML
     private void initialize(){
+        javafx.application.Platform.runLater(() -> {
+            changeMode();
+        });
 
         boiteDeEnBas.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -480,6 +485,22 @@ public class ControlleurTierslist {
 
     public void setName(String name){
         this.name.setText(name);
+    }
+
+    public void changeMode(){
+        Scene scene = boiteDeCat.getScene();
+        String darkCSS = getClass().getResource("css/application-dark.css").toExternalForm();
+        String lightCSS = getClass().getResource("css/application-light.css").toExternalForm();
+
+        LightMode = !LightMode;
+        scene.getStylesheets().clear();
+
+        if(LightMode){
+            scene.getStylesheets().add(darkCSS);
+        }else{
+            scene.getStylesheets().add(lightCSS);
+        }
+
     }
 
 

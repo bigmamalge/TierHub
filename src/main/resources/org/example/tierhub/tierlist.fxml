@@ -31,8 +31,8 @@
                   <MenuButton mnemonicParsing="false" text="Settings">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#tierListSetting" text="TierList setting" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeMode" text="Changer Mode Sombre/clair" />
                       <MenuItem mnemonicParsing="false" onAction="#saveAsJson" text="Sauvegarder" />
-                      <MenuItem mnemonicParsing="false" onAction="#chargerJsonSave" text="Charger une Sauvegarde" />
                     </items>
                   </MenuButton>
                     </children>
