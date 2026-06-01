@@ -4,7 +4,7 @@
     -fx-focus-color: -fx-accent;
     -fx-base: #172d40;
     -fx-background : -fx-base;
-    -fx-control-background: #172d40;
+    -fx-control-background: #111111;
     -fx-control-background-alt: -fx-control-inner-background ;
 }
 
@@ -75,9 +75,12 @@
     -fx-background-color: #1f3d57;
 }
 
-.icons {
-    position:absolute;
-    display:none;
-    content:"down-arrow.png";
+.tier1 {
+    -fx-background-color: #172D40 ;
+    -fx-border-color: #7c7c7d;
 }
-.icons:hover {display:block}
+
+.tier2 {
+    -fx-background-color: #294257 ;
+    -fx-border-color: #7c7c7d;
+}

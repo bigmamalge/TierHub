@@ -50,12 +50,16 @@ public class ControlleurTierslist {
     private ImageView imgLogo;
 
     private boolean colorbool = true;
+    private String theme;
 
     @FXML
     private void initialize(){
         javafx.application.Platform.runLater(() -> {
             changeMode();
             setcolortier();
+
+            String cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/engrenage.png").toExternalForm();
+            modify.setImage(new Image(cheminRessource));
         });
 
         boiteDeEnBas.setOnDragOver(event -> {
@@ -97,8 +101,7 @@ public class ControlleurTierslist {
 
         });
 
-        cheminRessource = getClass().getResource("engrenage.png").toExternalForm();
-        modify.setImage(new Image(cheminRessource));
+
 
         modify.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -235,7 +238,7 @@ public class ControlleurTierslist {
 
         HBox paramPan = new HBox();
         paramPan.setAlignment(Pos.CENTER);
-        String cheminRessource = getClass().getResource("engrenage2.png").toExternalForm();
+        String cheminRessource = getClass().getResource("gear.png").toExternalForm();
         ImageView engrenage = new ImageView(cheminRessource);
         engrenage.getStyleClass().add("icons");
         engrenage.setFitHeight(40);
@@ -244,14 +247,13 @@ public class ControlleurTierslist {
 
         VBox flechePan = new VBox();
         flechePan.setAlignment(Pos.CENTER);
-        cheminRessource = getClass().getResource("up-arrow2.png").toExternalForm();
+        cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/up-arrow.png").toExternalForm();
         ImageView flecheHaut = new ImageView(cheminRessource);
         flecheHaut.getStyleClass().add("icons");
         flecheHaut.setFitHeight(20);
         flecheHaut.setFitWidth(20);
 
-
-        cheminRessource = getClass().getResource("down-arrow2.png").toExternalForm();
+        cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/down-arrow.png").toExternalForm();
         ImageView flecheBas = new ImageView(cheminRessource);
         ColorAdjust monochrome = new ColorAdjust();
         monochrome.setSaturation(-1.0);
@@ -358,15 +360,37 @@ public class ControlleurTierslist {
             HBox hbox = (HBox) node;
             TilePane cat = (TilePane) hbox.getChildren().get(2);
             if(colorbool){
-                cat.setStyle("-fx-background-color: #172D40 ; -fx-border-color: #7c7c7d;");
+
+                cat.getStyleClass().clear();
+                cat.getStyleClass().add("tier1");
+
             }else{
-                cat.setStyle("-fx-background-color: #294257 ; -fx-border-color: #7c7c7d;");
+
+                cat.getStyleClass().clear();
+                cat.getStyleClass().add("tier2");
             }
+            VBox vbox = (VBox) ((HBox) hbox.getChildren().get(0)).getChildren().get(1);
+            ImageView flecheHaut = (ImageView) vbox.getChildren().get(0);
+            ImageView flecheBas = (ImageView) vbox.getChildren().get(1);
+            ImageView engrenage = (ImageView) ((HBox) hbox.getChildren().get(0)).getChildren().get(0);
+
+
+
+
+            String cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/down-arrow.png").toExternalForm();
+            String cheminRessource2 = getClass().getResource("/org/example/tierhub/images/"+theme+"/up-arrow.png").toExternalForm();
+            String cheminRessource3 = getClass().getResource("/org/example/tierhub/images/"+theme+"/engrenage.png").toExternalForm();
+            flecheBas.setImage(new Image(cheminRessource));
+            flecheHaut.setImage(new Image(cheminRessource2));
+            engrenage.setImage(new Image(cheminRessource3));
+            modify.setImage(new Image(cheminRessource3));
             colorbool = !colorbool;
+
         }
 
 
     }
+
 
     @FXML
     private void saveAsJson(){
@@ -523,10 +547,12 @@ public class ControlleurTierslist {
 
         if(LightMode){
             scene.getStylesheets().add(darkCSS);
+            theme = "Sombre";
         }else{
             scene.getStylesheets().add(lightCSS);
+            theme = "Clair";
         }
-
+        setcolortier();
     }
 
 
