@@ -63,7 +63,6 @@ public class ControlleurTierslist {
         });
         boiteDeEnBas.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
-                // Maintenant, la Scene existe, on peut y accéder sans faire planter le code !
                 changeMode();
                 String cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/engrenage.png").toExternalForm();
                 modify.setImage(new Image(cheminRessource));
