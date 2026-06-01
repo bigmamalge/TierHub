@@ -172,7 +172,8 @@ public class ControlleurTierslist {
         newItem.setScene(scene);
         newItem.initOwner(boiteDeCat.getScene().getWindow());
         newItem.initModality(Modality.APPLICATION_MODAL);
-        newItem.setTitle("newItem");
+        newItem.setTitle("Nouvel Item");
+        newItem.setResizable(false);
 
         ControlleurParamItem controlleur = loader.getController();
         controlleur.setImage(img);
@@ -326,7 +327,8 @@ public class ControlleurTierslist {
             setting.setScene(scene);
             setting.initOwner(boiteDeCat.getScene().getWindow());
             setting.initModality(Modality.APPLICATION_MODAL);
-            setting.setTitle("Setting");
+            setting.setTitle("Paramètres");
+            setting.setResizable(false);
 
             ControlleurParamTiers controlleur = loader.getController();
 
@@ -529,7 +531,8 @@ public class ControlleurTierslist {
         param.setScene(scene);
         param.initOwner(boiteDeCat.getScene().getWindow());
         param.initModality(Modality.APPLICATION_MODAL);
-        param.setTitle("parametre de la tierList");
+        param.setTitle("Paramètres de la TierList");
+        param.setResizable(false);
 
         ControlleurParamTierlist controlleur = loader.getController();
 

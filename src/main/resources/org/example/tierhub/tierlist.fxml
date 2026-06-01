@@ -12,22 +12,22 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="678.0" styleClass="hbox">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#newCat" text="Générer Tier List">
+                        <Button mnemonicParsing="false" onAction="#newCat" text="Ajouter un Tier">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" onAction="#addItem" text="New Item">
+                  <Button mnemonicParsing="false" onAction="#addItem" text="Ajouter un Item">
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <MenuButton mnemonicParsing="false" text="Settings">
+                  <MenuButton mnemonicParsing="false" text="Parametres">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#tierListSetting" text="TierList setting" />
+                        <MenuItem mnemonicParsing="false" onAction="#tierListSetting" text="Parametres TierList" />
                         <MenuItem mnemonicParsing="false" onAction="#changeMode" text="Changer Mode Sombre/clair" />
                       <MenuItem mnemonicParsing="false" onAction="#saveAsJson" text="Sauvegarder" />
-                        <MenuItem mnemonicParsing="false" onAction="#resetItem" text="Reset Item" />
+                        <MenuItem mnemonicParsing="false" onAction="#resetItem" text="Réinitialiser les items" />
                         <MenuItem mnemonicParsing="false" onAction="#dupliquer" text="Dupliquer" />
                         <MenuItem mnemonicParsing="false" onAction="#suppTl" text="Supprimer la TierList" />
                     </items>

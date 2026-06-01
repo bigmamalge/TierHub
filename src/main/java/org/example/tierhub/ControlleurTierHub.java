@@ -56,7 +56,7 @@ public class ControlleurTierHub {
                 String cheminRessource = getClass().getResource("PlusCircle.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
                 modelmenu = false;
-                label.setText("Crée une TierList");
+                label.setText("Créer une TierList");
                 recherche.setText("");
             }
             else{
@@ -65,7 +65,7 @@ public class ControlleurTierHub {
                 String cheminRessource = getClass().getResource("flecheBas.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
                 modelmenu = true;
-                label.setText("Retour Selection TiersList");
+                label.setText("Retour Selection TierList");
                 recherche.setText("");
             }
 
@@ -93,7 +93,7 @@ public class ControlleurTierHub {
             VBox vbox = new VBox();
             vbox.setAlignment(Pos.CENTER);
             vbox.setPrefSize(100,130);
-            vbox.setCursor(Cursor.HAND); //peut etre ajouter dans le css directement
+            vbox.setCursor(Cursor.HAND); //peut être ajouté dans le CSS directement
             ImageView iv = new ImageView(tl.getImg());
             iv.setFitWidth(70);
             iv.setFitHeight(70);

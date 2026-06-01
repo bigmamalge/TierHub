@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tierhub.ControlleurTierHub">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tierhub.ControlleurTierHub">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="600.0" style="-fx-background-color: #d2d2d2;">
          <children>
@@ -19,6 +14,9 @@
                <image>
                   <Image url="@TierHub.png" />
                </image>
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
             </ImageView>
          </children>
       </HBox>
@@ -39,7 +37,7 @@
                         <Image url="@PlusCircle.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="label" prefHeight="18.0" prefWidth="139.0" text="Crée une TierList" />
+                  <Label fx:id="label" prefHeight="18.0" prefWidth="139.0" text="Créer une TierList" />
                </children>
                <cursor>
                   <Cursor fx:constant="HAND" />

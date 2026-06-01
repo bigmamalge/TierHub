@@ -48,7 +48,7 @@ public class ControlleurParamItem {
     @FXML
     private void chargerImage() {
         if(imageLink.getText().equals("")) {
-            erreurTxt.setText("Erreur : Veuiller renseigner un lien pour charger");
+            erreurTxt.setText("Erreur : Veuillez renseigner un lien pour charger");
         }else{
             erreurTxt.setText("");
             imagePreview.setImage(new Image(imageLink.getText()));
@@ -122,7 +122,7 @@ public class ControlleurParamItem {
     @FXML
     private void chargerJeu() {
         if(nomJeu.getText().equals("")) {
-            erreurTxtJeu.setText("Erreur : Veuiller renseigner un Jeu pour charger");
+            erreurTxtJeu.setText("Erreur : Veuillez renseigner un Jeu pour charger");
         }else{
             String lien = Rawg.getGameImageUrl(nomJeu.getText());
             if(lien == null){

@@ -31,7 +31,7 @@ public class ControlleurParamTierlist {
     @FXML
     private void chargerImage() {
         if(imageLink.getText().equals("")) {
-            erreurTxt.setText("Erreur : Veuiller renseigner un lien pour charger");
+            erreurTxt.setText("Erreur : Veuillez renseigner un lien pour charger");
         }else{
             erreurTxt.setText("");
             imagePreview.setImage(new Image(imageLink.getText()));
