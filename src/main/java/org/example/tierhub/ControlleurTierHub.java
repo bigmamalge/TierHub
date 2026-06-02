@@ -53,7 +53,7 @@ public class ControlleurTierHub {
             if(modelmenu) {
                 chargerDossier("src/main/resources/org/example/tierhub/save");
                 afficher("");
-                String cheminRessource = getClass().getResource("PlusCircle.png").toExternalForm();
+                String cheminRessource = getClass().getResource("/org/example/tierhub/images/PlusCircle.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
                 modelmenu = false;
                 label.setText("Créer une TierList");
@@ -62,7 +62,7 @@ public class ControlleurTierHub {
             else{
                 chargerDossier("src/main/resources/org/example/tierhub/save/model");
                 afficher("");
-                String cheminRessource = getClass().getResource("flecheBas.png").toExternalForm();
+                String cheminRessource = getClass().getResource("/org/example/tierhub/images/Clair/down-arrow.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
                 modelmenu = true;
                 label.setText("Retour Selection TierList");

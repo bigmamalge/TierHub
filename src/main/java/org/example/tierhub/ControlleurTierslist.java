@@ -14,8 +14,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.example.model.*;
 import org.example.service.Jackson.Transform;
 
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -90,7 +93,7 @@ public class ControlleurTierslist {
 
         });
 
-        String cheminRessource = getClass().getResource("trash-can.png").toExternalForm();
+        String cheminRessource = getClass().getResource("/org/example/tierhub/images/trash-can.png").toExternalForm();
         trashcan.setImage(new Image(cheminRessource));
 
         trashcan.setOnDragOver(event -> {
@@ -247,7 +250,7 @@ public class ControlleurTierslist {
 
         HBox paramPan = new HBox();
         paramPan.setAlignment(Pos.CENTER);
-        String cheminRessource = getClass().getResource("gear.png").toExternalForm();
+        String cheminRessource = getClass().getResource("/org/example/tierhub/images/gear.png").toExternalForm();
         ImageView engrenage = new ImageView(cheminRessource);
         engrenage.getStyleClass().add("icons");
         engrenage.setFitHeight(40);
@@ -653,6 +656,61 @@ public class ControlleurTierslist {
             }
 
         }
+    }
+
+    @FXML
+    public void exporter(){
+        saveAsJson();
+        File fichierSource = new File("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Exporter la TierList");
+
+        fileChooser.setInitialFileName(fichierSource.getName());
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier JSON", "*.json")
+        );
+
+        Window fenetre = boiteDeEnBas.getScene().getWindow();
+        File fichierDestination = fileChooser.showSaveDialog(fenetre);
+
+        if(fichierDestination != null){
+            try {
+                Files.copy(fichierSource.toPath(), fichierDestination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @FXML
+    public void importer(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Importer une TierList");
+
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Fichier JSON", "*.json")
+        );
+
+        Window fenetre = boiteDeEnBas.getScene().getWindow();
+        File fichierChoisi = fileChooser.showOpenDialog(fenetre);
+
+        if(fichierChoisi != null){
+            File dossierSauvegardes = new File("src/main/resources/org/example/tierhub/save");
+            File fichierDestination = new File(dossierSauvegardes, fichierChoisi.getName());
+            try {
+                Files.copy(fichierChoisi.toPath(), fichierDestination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String leNom = fichierDestination.getName();
+            leNom = leNom.replace(".json","");
+            name.setText(leNom);
+            chargerJsonSave();
+        }
+
     }
 
 
