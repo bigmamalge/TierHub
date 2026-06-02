@@ -20,6 +20,9 @@ import org.example.service.Jackson.Transform;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class ControlleurTierHub {
@@ -38,11 +41,12 @@ public class ControlleurTierHub {
     private boolean modelmenu = false;
     private Transform transform = new Transform();
 
-
     @FXML
     private void initialize() {
 
-        chargerDossier("src/main/resources/org/example/tierhub/save");
+        preparerDossiersEtModeles();
+
+        chargerDossier("sauvegardes");
         afficher("");
 
         recherche.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -51,7 +55,7 @@ public class ControlleurTierHub {
 
         newItem.setOnMouseClicked(event -> {
             if(modelmenu) {
-                chargerDossier("src/main/resources/org/example/tierhub/save");
+                chargerDossier("sauvegardes");
                 afficher("");
                 String cheminRessource = getClass().getResource("/org/example/tierhub/images/PlusCircle.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
@@ -60,7 +64,7 @@ public class ControlleurTierHub {
                 recherche.setText("");
             }
             else{
-                chargerDossier("src/main/resources/org/example/tierhub/save/model");
+                chargerDossier("modeles");
                 afficher("");
                 String cheminRessource = getClass().getResource("/org/example/tierhub/images/Clair/down-arrow.png").toExternalForm();
                 image.setImage(new Image(cheminRessource));
@@ -71,17 +75,71 @@ public class ControlleurTierHub {
 
         });
     }
+
+    private void preparerDossiersEtModeles() {
+
+        File dossierSauvegardes = new File("sauvegardes");
+        dossierSauvegardes.mkdirs();
+
+        String[] savesDeBase = {
+                "Calisthenics Moves.json",
+                "Hybrid Theory Linkin Park.json",
+                "Les couleurs.json",
+                "Les Fruits !.json",
+                "Top 50 jeux 2025.json"
+        };
+
+        for (String nomFichier : savesDeBase) {
+            File saveExterne = new File(dossierSauvegardes, nomFichier);
+            if (!saveExterne.exists()) {
+                try {
+                    InputStream saveInterne = getClass().getResourceAsStream("/org/example/tierhub/save/" + nomFichier);
+                    if (saveInterne != null) {
+                        Files.copy(saveInterne, saveExterne.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur sauvegarde : " + e.getMessage());
+                }
+            }
+        }
+
+        File dossierModeles = new File("modeles");
+        dossierModeles.mkdirs();
+
+        String[] modelesDeBase = {
+                "model_vide.json",
+                "Tier_Config_Defaut.json"
+        };
+
+        for (String nomFichier : modelesDeBase) {
+            File modeleExterne = new File(dossierModeles, nomFichier);
+            if (!modeleExterne.exists()) {
+                try {
+                    InputStream modeleInterne = getClass().getResourceAsStream("/org/example/tierhub/save/model/" + nomFichier);
+                    if (modeleInterne != null) {
+                        Files.copy(modeleInterne, modeleExterne.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur modèle : " + e.getMessage());
+                }
+            }
+        }
+    }
+
     private void chargerDossier(String path){
         tiersLists = new ArrayList<>();
-        File dossier = new  File(path);
+        File dossier = new File(path);
 
+        if (!dossier.exists()) return;
 
         File[] fichiers = dossier.listFiles((dir, nom) -> nom.toLowerCase().endsWith(".json"));
         if  (fichiers != null) {
             for (File file : fichiers) {
                 TierList tl = transform.getJson(file.getAbsolutePath());
-                Image img = tl.getImg().getJavaFXImage();
-                tiersLists.add(new TierListPreview(tl.getName(), img));
+                if (tl != null && tl.getImg() != null) {
+                    Image img = tl.getImg().getJavaFXImage();
+                    tiersLists.add(new TierListPreview(tl.getName(), img));
+                }
             }
         }
     }
@@ -93,7 +151,7 @@ public class ControlleurTierHub {
             VBox vbox = new VBox();
             vbox.setAlignment(Pos.CENTER);
             vbox.setPrefSize(100,130);
-            vbox.setCursor(Cursor.HAND); //peut être ajouté dans le CSS directement
+            vbox.setCursor(Cursor.HAND);
             ImageView iv = new ImageView(tl.getImg());
             iv.setFitWidth(70);
             iv.setFitHeight(70);
@@ -104,7 +162,6 @@ public class ControlleurTierHub {
             if(recherche.equals("") || tl.getName().toLowerCase().contains(recherche.toLowerCase())){
                 tierListGroup.getChildren().add(vbox);
             }
-
 
             vbox.setOnMouseClicked(event -> {
                 lancerTl(tl.getName());
@@ -142,10 +199,4 @@ public class ControlleurTierHub {
         }
 
     }
-
-
-
-
-
-
 }

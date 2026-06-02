@@ -41,12 +41,9 @@ public class ControlleurTierslist {
     @FXML
     private ImageView modify;
 
-
     private Node item;
     private boolean LightMode = true;
 
-
-    private final File fichierJson = new File("tierList.json");
     private final Transform transform = new Transform();
 
     private int itemSize;
@@ -90,7 +87,6 @@ public class ControlleurTierslist {
             }else{
                 event.setDropCompleted(false);
             }
-
         });
 
         String cheminRessource = getClass().getResource("/org/example/tierhub/images/trash-can.png").toExternalForm();
@@ -110,9 +106,7 @@ public class ControlleurTierslist {
             }else{
                 event.setDropCompleted(false);
             }
-
         });
-
 
         modify.setOnDragOver(event -> {
             event.acceptTransferModes(TransferMode.MOVE);
@@ -138,13 +132,24 @@ public class ControlleurTierslist {
             }else{
                 event.setDropCompleted(false);
             }
-
         });
 
         name.setText("My TierList");
         cheminRessource = getClass().getResource("TierHub.png").toExternalForm();
         imgLogo.setImage(new Image(cheminRessource));
+    }
 
+
+    private String getCheminFichier() {
+        String nomActuel = name.getText();
+
+        if (nomActuel.startsWith("model/")) {
+            String vraiNom = nomActuel.replace("model/", "");
+            return "modeles/" + vraiNom + ".json";
+        } else {
+
+            return "sauvegardes/" + nomActuel + ".json";
+        }
     }
 
     @FXML
@@ -240,7 +245,6 @@ public class ControlleurTierslist {
     @FXML
     private void newCat(){
         Random rdm = new Random();
-
         newCat(String.format("#%06X", rdm.nextInt(0xFFFFFF + 1)),"Nom Cat");
     }
 
@@ -279,7 +283,6 @@ public class ControlleurTierslist {
 
         ligne.getChildren().add(paramPan);
 
-
         StackPane titrePan = new StackPane();
         titrePan.setPrefWidth(100);
         Label titre = new Label();
@@ -291,7 +294,6 @@ public class ControlleurTierslist {
 
         TilePane cat  = new TilePane();
         HBox.setHgrow(cat, Priority.ALWAYS);
-        //cat.setStyle("-fx-background-color: #c7c8c9 ; -fx-border-color: #7c7c7d;");
 
         ligne.getChildren().add(cat);
 
@@ -305,8 +307,8 @@ public class ControlleurTierslist {
                 boiteDeCat.getChildren().add(pos - 1, ligne);
             }
             setcolortier();
-
         });
+
         flecheBas.setOnMouseClicked(event -> {
             int pos = boiteDeCat.getChildren().indexOf(ligne);
             if(pos < boiteDeCat.getChildren().size() -1){
@@ -373,12 +375,9 @@ public class ControlleurTierslist {
             HBox hbox = (HBox) node;
             TilePane cat = (TilePane) hbox.getChildren().get(2);
             if(colorbool){
-
                 cat.getStyleClass().clear();
                 cat.getStyleClass().add("tier1");
-
             }else{
-
                 cat.getStyleClass().clear();
                 cat.getStyleClass().add("tier2");
             }
@@ -386,9 +385,6 @@ public class ControlleurTierslist {
             ImageView flecheHaut = (ImageView) vbox.getChildren().get(0);
             ImageView flecheBas = (ImageView) vbox.getChildren().get(1);
             ImageView engrenage = (ImageView) ((HBox) hbox.getChildren().get(0)).getChildren().get(0);
-
-
-
 
             String cheminRessource = getClass().getResource("/org/example/tierhub/images/"+theme+"/down-arrow.png").toExternalForm();
             String cheminRessource2 = getClass().getResource("/org/example/tierhub/images/"+theme+"/up-arrow.png").toExternalForm();
@@ -398,10 +394,7 @@ public class ControlleurTierslist {
             engrenage.setImage(new Image(cheminRessource3));
             modify.setImage(new Image(cheminRessource3));
             colorbool = !colorbool;
-
         }
-
-
     }
 
 
@@ -459,8 +452,8 @@ public class ControlleurTierslist {
             }
         }
 
-        transform.setJson("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json", tierlist);
 
+        transform.setJson(getCheminFichier(), tierlist);
     }
 
 
@@ -469,7 +462,8 @@ public class ControlleurTierslist {
         boiteDeEnBas.getChildren().clear();
         boiteDeCat.getChildren().clear();
 
-        TierList tierlist = transform.getJson("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+        TierList tierlist = transform.getJson(getCheminFichier());
+
         imgLogo.setImage(tierlist.getImg().getJavaFXImage());
         name.setText(tierlist.getName());
 
@@ -495,7 +489,6 @@ public class ControlleurTierslist {
                 }
             }
         }
-
     }
 
     private void addImageJson(TilePane tilePane, Image img){
@@ -507,6 +500,7 @@ public class ControlleurTierslist {
 
         setDragable(uneImg);
     }
+
     private void addTextJson(TilePane tilePane, Color color, String txt){
         StackPane blockLabel = new StackPane();
         blockLabel.setPrefSize(itemSize, itemSize);
@@ -573,7 +567,7 @@ public class ControlleurTierslist {
     }
 
     public void suppTl(){
-        Path cheminDuFichier = Paths.get("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+        Path cheminDuFichier = Paths.get(getCheminFichier());
         try {
             boolean estSupprime = Files.deleteIfExists(cheminDuFichier);
 
@@ -616,13 +610,11 @@ public class ControlleurTierslist {
         ControlleurTierslist controlleur = loader.getController();
         controlleur.setName(name.getText());
 
-
         controlleur.chargerJsonSave();
         tierlistPage.show();
 
         controlleur.setName(name.getText()+"-Copy");
         controlleur.tierListSetting();
-
     }
 
     @FXML
@@ -632,7 +624,6 @@ public class ControlleurTierslist {
             TilePane cat = (TilePane) hbox.getChildren().get(2);
 
             boiteDeEnBas.getChildren().addAll(cat.getChildren());
-
         }
     }
 
@@ -651,17 +642,15 @@ public class ControlleurTierslist {
                     ImageView imageView = (ImageView) child;
                     imageView.setFitWidth(itemSize);
                     imageView.setFitHeight(itemSize);
-
                 }
             }
-
         }
     }
 
     @FXML
     public void exporter(){
         saveAsJson();
-        File fichierSource = new File("src/main/resources/org/example/tierhub/save/"+ name.getText() +".json");
+        File fichierSource = new File(getCheminFichier());
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Exporter la TierList");
@@ -689,7 +678,6 @@ public class ControlleurTierslist {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Importer une TierList");
 
-
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Fichier JSON", "*.json")
         );
@@ -698,7 +686,11 @@ public class ControlleurTierslist {
         File fichierChoisi = fileChooser.showOpenDialog(fenetre);
 
         if(fichierChoisi != null){
-            File dossierSauvegardes = new File("src/main/resources/org/example/tierhub/save");
+
+            File dossierSauvegardes = new File("sauvegardes");
+            if (!dossierSauvegardes.exists()) {
+                dossierSauvegardes.mkdirs();
+            }
             File fichierDestination = new File(dossierSauvegardes, fichierChoisi.getName());
             try {
                 Files.copy(fichierChoisi.toPath(), fichierDestination.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -710,8 +702,5 @@ public class ControlleurTierslist {
             name.setText(leNom);
             chargerJsonSave();
         }
-
     }
-
-
 }
